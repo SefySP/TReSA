@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class Indexer
+public class Indexer implements AutoCloseable
 {
     private IndexWriter writer;
 
