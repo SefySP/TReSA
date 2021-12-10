@@ -11,8 +11,8 @@ import javafx.stage.Stage;
 
 public class TReSA extends Application
 {
-    private static final double MIN_HEIGHT = 300.0;
-    private static final double MIN_WIDTH = 300.0;
+    private static final double MIN_HEIGHT = 400.0;
+    private static final double MIN_WIDTH = 400.0;
 
     @Override
     public void start(Stage primaryStage) throws IOException

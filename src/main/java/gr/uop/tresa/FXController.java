@@ -77,29 +77,34 @@ public class FXController implements Initializable
         List<File> fileList = fileChooser.showOpenMultipleDialog(mainPane.getScene().getWindow());
         if (fileList != null)
         {
-            for (File file : fileList)
-            {
-                Path sourcePath = Paths.get(file.toURI());
-                Path targetPath = Paths.get(new File(LuceneController.DATA_DIR + File.separator + file.getName()).toURI());
-                System.out.println("File: " + file.getName());
-                System.out.println("Source: " + sourcePath.getFileName());
-                System.out.println("Target: " + targetPath.getFileName());
-                try
-                {
-                    Files.copy(sourcePath, targetPath);
-                }
-                catch (FileAlreadyExistsException fileAlreadyExistsException)
-                {
-                    System.out.println("already exists!!");
-                }
-                catch (IOException ioException)
-                {
-                    System.out.println(ioException.getMessage());
-                }
-            }
+            copyFiles(fileList);
 
             luceneController.deleteIndexDir();
             luceneController.createIndex();
+        }
+    }
+
+    private void copyFiles(List<File> fileList)
+    {
+        for (File file : fileList)
+        {
+            Path sourcePath = Paths.get(file.toURI());
+            Path targetPath = Paths.get(new File(LuceneController.DATA_DIR + File.separator + file.getName()).toURI());
+            System.out.println("File: " + file.getName());
+            System.out.println("Source: " + sourcePath.getFileName());
+            System.out.println("Target: " + targetPath.getFileName());
+            try
+            {
+                Files.copy(sourcePath, targetPath);
+            }
+            catch (FileAlreadyExistsException fileAlreadyExistsException)
+            {
+                System.out.println("already exists!!");
+            }
+            catch (IOException ioException)
+            {
+                System.out.println(ioException.getMessage());
+            }
         }
     }
 
@@ -115,22 +120,27 @@ public class FXController implements Initializable
         List<File> fileList = fileChooser.showOpenMultipleDialog(mainPane.getScene().getWindow());
         if (fileList != null)
         {
-            for (File file : fileList)
-            {
-                Path sourcePath = Paths.get(file.toURI());
-                System.out.println("File: " + file.getName());
-                System.out.println("Source: " + sourcePath.getFileName());
-                try
-                {
-                    Files.deleteIfExists(sourcePath);
-                }
-                catch (IOException ioException)
-                {
-                    System.out.println(ioException.getMessage());
-                }
-            }
+            deleteFilesIfExists(fileList);
             luceneController.deleteIndexDir();
             luceneController.createIndex();
+        }
+    }
+
+    private void deleteFilesIfExists(List<File> fileList)
+    {
+        for (File file : fileList)
+        {
+            Path sourcePath = Paths.get(file.toURI());
+            System.out.println("File: " + file.getName());
+            System.out.println("Source: " + sourcePath.getFileName());
+            try
+            {
+                Files.deleteIfExists(sourcePath);
+            }
+            catch (IOException ioException)
+            {
+                System.out.println(ioException.getMessage());
+            }
         }
     }
 
