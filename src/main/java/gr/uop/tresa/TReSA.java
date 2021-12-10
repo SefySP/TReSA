@@ -29,7 +29,8 @@ public class TReSA extends Application
         primaryStage.setMinWidth(MIN_WIDTH);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         launch(args);
     }
 }
