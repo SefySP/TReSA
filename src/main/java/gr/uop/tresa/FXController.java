@@ -10,16 +10,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import gr.uop.lucene.LuceneController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXController implements Initializable
@@ -99,12 +103,40 @@ public class FXController implements Initializable
             }
             catch (FileAlreadyExistsException fileAlreadyExistsException)
             {
-                System.out.println("already exists!!");
+                fileExistsAlert(sourcePath);
             }
             catch (IOException ioException)
             {
-                System.out.println(ioException.getMessage());
+                fileIOAlert(sourcePath);
             }
+        }
+    }
+
+    private void fileIOAlert(Path sourcePath)
+    {
+        Alert fileFiledAlert = new Alert(Alert.AlertType.ERROR);
+        fileFiledAlert.setTitle("IO Error");
+        fileFiledAlert.setHeaderText("File : " + sourcePath.getFileName());
+        fileFiledAlert.setContentText("Something happened with this file " + sourcePath.getFileName() + "Try " +
+                "again");
+        fileFiledAlert.initOwner(mainPane.getScene().getWindow());
+        fileFiledAlert.initModality(Modality.APPLICATION_MODAL);
+        fileFiledAlert.showAndWait();
+    }
+
+    private void fileExistsAlert(Path sourcePath)
+    {
+        Alert fileExists = new Alert(Alert.AlertType.ERROR);
+        fileExists.setTitle("File Already Exists");
+        fileExists.setHeaderText("File : " + sourcePath.getFileName());
+        fileExists.setContentText("This : " + sourcePath.getFileName() + " file already exists");
+        fileExists.initOwner(mainPane.getScene().getWindow());
+        fileExists.initModality(Modality.APPLICATION_MODAL);
+
+        Optional<ButtonType> options = fileExists.showAndWait();
+        if (options.isPresent() && options.get() == ButtonType.OK)
+        {
+            System.out.println("This file already exists");
         }
     }
 
@@ -139,7 +171,7 @@ public class FXController implements Initializable
             }
             catch (IOException ioException)
             {
-                System.out.println(ioException.getMessage());
+                fileIOAlert(sourcePath);
             }
         }
     }
@@ -148,7 +180,31 @@ public class FXController implements Initializable
     public void close(ActionEvent event)
     {
         Stage stage = (Stage) mainPane.getScene().getWindow();
-        stage.close();
+        closeRequest(stage);
+    }
+
+    private void closeRequest(Stage stage)
+    {
+        if (!searchText.getText().trim().isEmpty())
+        {
+            Alert confirmExitAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmExitAlert.setTitle("Confirm");
+            confirmExitAlert.setHeaderText("Exit?");
+            confirmExitAlert.initOwner(mainPane.getScene().getWindow());
+            confirmExitAlert.initModality(Modality.APPLICATION_MODAL);
+            Optional<ButtonType> result = confirmExitAlert.showAndWait();
+            if (result.isPresent())
+            {
+                if (result.get() == ButtonType.OK)
+                {
+                    stage.close();
+                }
+                else
+                {
+                    confirmExitAlert.close();
+                }
+            }
+        }
     }
 
     @FXML
