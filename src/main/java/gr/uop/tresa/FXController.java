@@ -35,7 +35,7 @@ public class FXController implements Initializable
     private BorderPane mainPane;
 
     @FXML
-    private TextField searchText;
+    private TextField searchText = new TextField();
 
     @FXML
     private Text searchResults;
@@ -77,7 +77,7 @@ public class FXController implements Initializable
         FileChooser fileChooser = new FileChooser();
 
         fileChooser.setTitle("Add Files");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt","*.txt"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt", "*.txt"));
         fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 
 
@@ -149,7 +149,7 @@ public class FXController implements Initializable
         FileChooser fileChooser = new FileChooser();
 
         fileChooser.setTitle("Delete Files");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt","*.txt"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt", "*.txt"));
         fileChooser.setInitialDirectory(new File(LuceneController.DATA_DIR));
 
         List<File> fileList = fileChooser.showOpenMultipleDialog(mainPane.getScene().getWindow());
@@ -194,9 +194,9 @@ public class FXController implements Initializable
             editStage.initModality(Modality.APPLICATION_MODAL);
             editStage.initOwner(mainPane.getScene().getWindow());
             editStage.setScene(scene);
-            editStage.showAndWait();
-
-
+            editStage.show();
+            editStage.setMinHeight(400.0);
+            editStage.setMinWidth(400.0);
         }
         catch (IOException ioException)
         {
@@ -209,31 +209,41 @@ public class FXController implements Initializable
     public void close(ActionEvent event)
     {
         Stage stage = (Stage) mainPane.getScene().getWindow();
-        closeRequest(stage);
+        if (closeRequest(stage))
+        {
+            stage.close();
+        }
     }
 
-    private void closeRequest(Stage stage)
+    public boolean close(Stage stage)
+    {
+        return closeRequest(stage);
+    }
+
+    private boolean closeRequest(Stage stage)
     {
         if (!searchText.getText().trim().isEmpty())
         {
             Alert confirmExitAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmExitAlert.setTitle("Confirm");
             confirmExitAlert.setHeaderText("Exit?");
-            confirmExitAlert.initOwner(mainPane.getScene().getWindow());
+            confirmExitAlert.initOwner(stage.getOwner());
             confirmExitAlert.initModality(Modality.APPLICATION_MODAL);
             Optional<ButtonType> result = confirmExitAlert.showAndWait();
             if (result.isPresent())
             {
                 if (result.get() == ButtonType.OK)
                 {
-                    stage.close();
+                    return true;
                 }
                 else
                 {
                     confirmExitAlert.close();
+                    return false;
                 }
             }
         }
+        return false;
     }
 
     @FXML

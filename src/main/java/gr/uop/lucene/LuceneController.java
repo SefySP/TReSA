@@ -44,26 +44,22 @@ public class LuceneController
     {
         File index = new File(INDEX_DIR);
         String[] entries = index.list();
-        if(entries != null && entries.length == 0)
-        {
-            return true;
-        }
-        return false;
+        return entries != null && entries.length == 0;
     }
 
     public void deleteIndexDir()
     {
         String[] entries = new File(INDEX_DIR).list();
-        for (String file: entries)
+        for (String file : entries)
         {
-            File currentFile = new File(new File(INDEX_DIR),file);
+            File currentFile = new File(new File(INDEX_DIR), file);
             currentFile.delete();
         }
     }
 
     public void createIndex()
     {
-        try(Indexer indexer = new Indexer(INDEX_DIR))
+        try (Indexer indexer = new Indexer(INDEX_DIR))
         {
             int numIndexed;
             long startTime = System.currentTimeMillis();
@@ -98,7 +94,7 @@ public class LuceneController
     {
         Searcher searcher = new Searcher(INDEX_DIR);
         StringBuilder topDocs = new StringBuilder();
-        for (ScoreDoc scoreDoc: hits.scoreDocs)
+        for (ScoreDoc scoreDoc : hits.scoreDocs)
         {
             Document doc = searcher.getDocument(scoreDoc);
             topDocs.append(doc.get(LuceneConstants.FILE_NAME)).append("\n");

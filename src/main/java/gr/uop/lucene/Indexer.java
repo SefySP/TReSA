@@ -23,7 +23,7 @@ import gr.uop.ArticleData;
 
 public class Indexer implements AutoCloseable
 {
-    private IndexWriter writer;
+    private final IndexWriter writer;
 
     public Indexer(String indexDirectoryPath) throws IOException
     {
