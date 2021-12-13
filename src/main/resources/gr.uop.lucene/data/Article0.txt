@@ -1,7 +1,4 @@
 <PLACES>el-salvadorusauruguay</PLACES>
-<PEOPLE>Elon Musk</PEOPLE>
+<PEOPLE>Musk Elon</PEOPLE>
 <TITLE>BAHIA COCOA REVIEW</TITLE>
-<BODY>Showers continued throughout the week in
-the Bahia cocoa zone.
-mpla connection
-mple</BODY>
+<BODY>Showers continued throughout the week in the Bahia cocoa zone. 123 mpla connection mple</BODY>

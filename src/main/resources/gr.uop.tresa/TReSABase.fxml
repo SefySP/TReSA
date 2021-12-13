@@ -61,6 +61,7 @@
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#addFiles" text="Add File(s)..." />
                   <MenuItem mnemonicParsing="false" onAction="#deleteFiles" text="Delete File(s)..." />
+                  <MenuItem mnemonicParsing="false" onAction="#editFileDialog" text="Edit File..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
             </items>

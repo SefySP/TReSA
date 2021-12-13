@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import gr.uop.ArticleData;
+
 public class Indexer implements AutoCloseable
 {
     private IndexWriter writer;
@@ -51,13 +53,15 @@ public class Indexer implements AutoCloseable
                 stringBuilder.append(currentLine).append(" ");
             }
 
-            String places = getString(stringBuilder, "<PLACES>", "</PLACES>");
-            String people = getString(stringBuilder, "<PEOPLE>", "</PEOPLE>");
-            String title = getString(stringBuilder, "<TITLE>", "</TITLE>");
-            String body = getString(stringBuilder, "<BODY>", "</BODY>");
+            ArticleData articleData = new ArticleData(file.getName(), file.getCanonicalPath());
+
+            articleData.setPlaces(stringBuilder);
+            articleData.setPeople(stringBuilder);
+            articleData.setTitle(stringBuilder);
+            articleData.setBody(stringBuilder);
 
             EnglishStemmer stemmer = new EnglishStemmer();
-            String[] words = body.split("[ .,]+");
+            String[] words = articleData.getBody().split("[ .,]+");
             stringBuilder = new StringBuilder();
             for (String word : words)
             {
@@ -65,13 +69,13 @@ public class Indexer implements AutoCloseable
                 stemmer.stem();
                 stringBuilder.append(stemmer.getCurrent()).append(" ");
             }
-            body = stringBuilder.toString();
+            articleData.setBody(stringBuilder.toString());
 
 
-            Field placesField = new Field(LuceneConstants.PLACES, places, TextField.TYPE_STORED);
-            Field peopleField = new Field(LuceneConstants.PEOPLE, people, TextField.TYPE_STORED);
-            Field titleField = new Field(LuceneConstants.TITLE, title, TextField.TYPE_STORED);
-            Field bodyField = new Field(LuceneConstants.BODY, body, TextField.TYPE_STORED);
+            Field placesField = new Field(LuceneConstants.PLACES, articleData.getPlaces(), TextField.TYPE_STORED);
+            Field peopleField = new Field(LuceneConstants.PEOPLE, articleData.getPeople(), TextField.TYPE_STORED);
+            Field titleField = new Field(LuceneConstants.TITLE, articleData.getTitle(), TextField.TYPE_STORED);
+            Field bodyField = new Field(LuceneConstants.BODY, articleData.getBody(), TextField.TYPE_STORED);
 
             Field fileNameField = new Field(LuceneConstants.FILE_NAME, file.getName(), StringField.TYPE_STORED);
             Field filePathField = new Field(LuceneConstants.FILE_PATH, file.getCanonicalPath(),
@@ -96,7 +100,6 @@ public class Indexer implements AutoCloseable
         int placesStart = stringBuilder.toString().trim().indexOf(tagStart) + tagStart.length();
         int placesEnd = stringBuilder.toString().trim().indexOf(tagEnd);
 
-//        System.out.println(placesStart + " " + placesEnd);
         return stringBuilder.substring(placesStart, placesEnd);
     }
 

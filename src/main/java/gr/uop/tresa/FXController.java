@@ -16,7 +16,10 @@ import java.util.ResourceBundle;
 import gr.uop.lucene.LuceneController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
@@ -174,6 +177,32 @@ public class FXController implements Initializable
                 fileIOAlert(sourcePath);
             }
         }
+    }
+
+    @FXML
+    public void editFileDialog(ActionEvent event)
+    {
+        try
+        {
+            File editArticleFile = new File("src/main/resources/gr.uop.tresa/EditArticleDialog.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(editArticleFile.toURI().toURL());
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage editStage = new Stage();
+
+            editStage.setTitle("Edit File");
+            editStage.initModality(Modality.APPLICATION_MODAL);
+            editStage.initOwner(mainPane.getScene().getWindow());
+            editStage.setScene(scene);
+            editStage.showAndWait();
+
+
+        }
+        catch (IOException ioException)
+        {
+            System.out.println(ioException.getMessage());
+        }
+
     }
 
     @FXML
