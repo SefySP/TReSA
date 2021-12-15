@@ -243,7 +243,7 @@ public class FXController implements Initializable
                 }
             }
         }
-        return false;
+        return true;
     }
 
     @FXML

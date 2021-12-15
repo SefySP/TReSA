@@ -14,5 +14,6 @@
     <orderEntry type="library" name="lucene-analyzers-common-8.11.0" level="project" />
     <orderEntry type="library" name="lucene-core-8.11.0" level="project" />
     <orderEntry type="library" name="lucene-queryparser-8.11.0" level="project" />
+    <orderEntry type="library" name="lib" level="application" />
   </component>
 </module>

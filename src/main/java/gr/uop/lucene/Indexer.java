@@ -95,14 +95,6 @@ public class Indexer implements AutoCloseable
         return document;
     }
 
-    private String getString(StringBuilder stringBuilder, String tagStart, String tagEnd)
-    {
-        int placesStart = stringBuilder.toString().trim().indexOf(tagStart) + tagStart.length();
-        int placesEnd = stringBuilder.toString().trim().indexOf(tagEnd);
-
-        return stringBuilder.substring(placesStart, placesEnd);
-    }
-
     private void indexFile(File file) throws IOException
     {
         System.out.println("Indexing " + file.getCanonicalPath());
