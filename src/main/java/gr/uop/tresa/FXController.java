@@ -46,10 +46,16 @@ public class FXController implements Initializable
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         luceneController = new LuceneController();
-        if (luceneController.indexDirExists() && luceneController.isIndexDirEmpty())
+        if(!luceneController.indexDirExists())
+        {
+           luceneController.createIndexDir();
+           luceneController.createIndex();
+        }
+        else if(luceneController.isIndexDirEmpty())
         {
             luceneController.createIndex();
         }
+
     }
 
     @FXML

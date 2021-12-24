@@ -7,6 +7,7 @@ import org.apache.lucene.search.TopDocs;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,42 +19,51 @@ public class LuceneController
 
     public TopDocs hits;
 
-    public boolean indexDirExists()
+    public void createIndexDir()
     {
+        Path indexPath = Paths.get(LuceneController.INDEX_DIR);
         try
         {
-            Path indexPath = Paths.get(LuceneController.INDEX_DIR);
-            if (!Files.exists(indexPath))
-            {
-                Files.createDirectory(indexPath);
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            Files.createDirectory(indexPath);
         }
-        catch (IOException ioException)
+        catch(IOException e)
         {
-            ioException.printStackTrace();
+            System.out.println(e.getMessage());
         }
-        return false;
+    }
+
+    public boolean indexDirExists()
+    {
+        Path indexPath = Paths.get(LuceneController.INDEX_DIR);
+        return Files.exists(indexPath);
     }
 
     public boolean isIndexDirEmpty()
     {
         File index = new File(INDEX_DIR);
         String[] entries = index.list();
-        return entries != null && entries.length == 0;
+        if(entries != null)
+        {
+            return entries.length == 0;
+        }
+        return false;
     }
 
     public void deleteIndexDir()
     {
         String[] entries = new File(INDEX_DIR).list();
+        assert entries != null;
         for (String file : entries)
         {
             File currentFile = new File(new File(INDEX_DIR), file);
-            currentFile.delete();
+            try
+            {
+                Files.delete(currentFile.toPath());
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
