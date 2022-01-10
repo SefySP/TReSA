@@ -185,6 +185,10 @@ public class EditArticleController implements Initializable
         {
             confirmEditAlert();
         }
+        else
+        {
+            closeDialog();
+        }
     }
 
     private void closeDialog()

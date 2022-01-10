@@ -78,6 +78,7 @@ public class FXController implements Initializable
             luceneController.createIndex();
         }
         resultListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        resultListView.setCellFactory(hyperlinkListView -> new CenteredListViewCell());
     }
 
     @FXML
@@ -136,7 +137,6 @@ public class FXController implements Initializable
 
     private void showResultFileDialog(File result)
     {
-        System.out.println(result.getAbsolutePath());
         FileHolder holder = FileHolder.getInstance();
         holder.setFile(result);
         try
