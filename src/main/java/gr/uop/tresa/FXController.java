@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import gr.uop.FileHolder;
 import gr.uop.lucene.LuceneController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,6 +23,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -38,7 +42,10 @@ public class FXController implements Initializable
     private TextField searchText = new TextField();
 
     @FXML
-    private Text searchResults;
+    private ListView<Hyperlink> resultListView;
+
+    @FXML
+    private Text resultTime;
 
     private LuceneController luceneController;
 
@@ -55,7 +62,7 @@ public class FXController implements Initializable
         {
             luceneController.createIndex();
         }
-
+        resultListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 
     @FXML
@@ -66,8 +73,18 @@ public class FXController implements Initializable
             String searchTerm = searchText.getText().trim();
             if (!searchTerm.isEmpty())
             {
-                luceneController.search(searchTerm);
-                searchResults.setText(luceneController.getTopResults());
+                resultListView.getItems().clear();
+                List<File> resultList = luceneController.search(searchTerm);
+                resultTime.setText("Time: " + luceneController.getTime() + " ms");
+                for (File result : resultList)
+                {
+                    Hyperlink link = new Hyperlink(result.getName());
+                    link.setOnAction(e ->
+                    {
+                        showResultFileDialog(result);
+                    });
+                    resultListView.getItems().add(link);
+                }
             }
         }
         catch (IOException | ParseException exception)
@@ -75,6 +92,33 @@ public class FXController implements Initializable
             exception.printStackTrace();
         }
 
+    }
+
+    private void showResultFileDialog(File result)
+    {
+        System.out.println(result.getAbsolutePath());
+        FileHolder holder = FileHolder.getInstance();
+        holder.setFile(result);
+        try
+        {
+            File showArticleFile = new File("src/main/resources/gr.uop.tresa/ShowArticleDialog.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(showArticleFile.toURI().toURL());
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            Stage showStage = new Stage();
+
+            showStage.setTitle(result.getName());
+            showStage.initModality(Modality.APPLICATION_MODAL);
+            showStage.initOwner(mainPane.getScene().getWindow());
+            showStage.setScene(scene);
+            showStage.show();
+            showStage.setMinHeight(400.0);
+            showStage.setMinWidth(400.0);
+        }
+        catch (IOException ioException)
+        {
+            System.out.println(ioException.getMessage());
+        }
     }
 
     @FXML

@@ -7,17 +7,18 @@ import org.apache.lucene.search.TopDocs;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LuceneController
 {
     public static final String INDEX_DIR = "src/main/resources/gr.uop.lucene/index";
     public static final String DATA_DIR = "src/main/resources/gr.uop.lucene/data";
 
-    public TopDocs hits;
+    private long time;
 
     public void createIndexDir()
     {
@@ -84,31 +85,39 @@ public class LuceneController
 
     }
 
-    public void search(String searchQuery) throws IOException, ParseException
+    public List<File> search(String searchQuery) throws IOException, ParseException
     {
         Searcher searcher = new Searcher(INDEX_DIR);
 
         long startTime = System.currentTimeMillis();
-        hits = searcher.search(searchQuery);
+        TopDocs hits = searcher.search(searchQuery);
         long endTime = System.currentTimeMillis();
 
 
-        System.out.println(hits.totalHits + " documents found. Time :" + (endTime - startTime));
-        System.out.println(getTopResults());
+        setTime(endTime - startTime);
 
-        searcher.close();
+        return getTopResults(searcher, hits);
     }
 
-
-    public String getTopResults() throws IOException
+    private List<File> getTopResults(Searcher searcher, TopDocs hits) throws IOException
     {
-        Searcher searcher = new Searcher(INDEX_DIR);
-        StringBuilder topDocs = new StringBuilder();
+        List<File> topDocsFileList = new ArrayList<>();
         for (ScoreDoc scoreDoc : hits.scoreDocs)
         {
             Document doc = searcher.getDocument(scoreDoc);
-            topDocs.append(doc.get(LuceneConstants.FILE_NAME)).append("\n");
+            topDocsFileList.add(new File(doc.get(LuceneConstants.FILE_PATH)));
         }
-        return topDocs.toString();
+        searcher.close();
+        return topDocsFileList;
+    }
+
+    public long getTime()
+    {
+        return time;
+    }
+
+    public void setTime(long time)
+    {
+        this.time = time;
     }
 }
