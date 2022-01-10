@@ -9,11 +9,13 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import gr.uop.FileHolder;
+import gr.uop.lucene.LuceneConstants;
 import gr.uop.lucene.LuceneController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
@@ -35,6 +38,18 @@ import javafx.stage.Stage;
 
 public class FXController implements Initializable
 {
+    @FXML
+    private CheckBox checkBody;
+
+    @FXML
+    private CheckBox checkPeople;
+
+    @FXML
+    private CheckBox checkPlaces;
+
+    @FXML
+    private CheckBox checkTitle;
+
     @FXML
     private BorderPane mainPane;
 
@@ -74,7 +89,7 @@ public class FXController implements Initializable
             if (!searchTerm.isEmpty())
             {
                 resultListView.getItems().clear();
-                List<File> resultList = luceneController.search(searchTerm);
+                List<File> resultList = luceneController.search(searchTerm, getCheckFields());
                 resultTime.setText("Time: " + luceneController.getTime() + " ms");
                 for (File result : resultList)
                 {
@@ -92,6 +107,31 @@ public class FXController implements Initializable
             exception.printStackTrace();
         }
 
+    }
+
+    private String[] getCheckFields()
+    {
+        List<String> fields = new ArrayList<>();
+        fields.add(LuceneConstants.BODY);
+
+        if (checkPlaces.isSelected())
+        {
+            fields.add(LuceneConstants.PLACES);
+        }
+        if (checkPeople.isSelected())
+        {
+            fields.add(LuceneConstants.PEOPLE);
+        }
+        if (checkTitle.isSelected())
+        {
+            fields.add(LuceneConstants.TITLE);
+        }
+        if (!checkBody.isSelected())
+        {
+            fields.remove(LuceneConstants.BODY);
+        }
+
+        return fields.toArray(new String[0]);
     }
 
     private void showResultFileDialog(File result)

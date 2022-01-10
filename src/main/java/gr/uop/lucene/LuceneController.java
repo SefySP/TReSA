@@ -85,9 +85,9 @@ public class LuceneController
 
     }
 
-    public List<File> search(String searchQuery) throws IOException, ParseException
+    public List<File> search(String searchQuery, String[] fields) throws IOException, ParseException
     {
-        Searcher searcher = new Searcher(INDEX_DIR);
+        Searcher searcher = new Searcher(INDEX_DIR, fields);
 
         long startTime = System.currentTimeMillis();
         TopDocs hits = searcher.search(searchQuery);

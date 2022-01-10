@@ -26,16 +26,13 @@ public class Searcher
     private final IndexReader indexReader;
     private final QueryParser queryParser;
 
-    public Searcher(String indexDirectoryPath) throws IOException
+    public Searcher(String indexDirectoryPath, String[] fields) throws IOException
     {
         Path indexPath = Paths.get(indexDirectoryPath);
         indexDirectory = FSDirectory.open(indexPath);
         indexReader = DirectoryReader.open(indexDirectory);
         indexSearcher = new IndexSearcher(indexReader);
-        queryParser = new MultiFieldQueryParser(new String[]{LuceneConstants.BODY, LuceneConstants.PLACES,
-                                                             LuceneConstants.TITLE,
-                                                             LuceneConstants.PEOPLE},
-                new EnglishAnalyzer(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET));
+        queryParser = new MultiFieldQueryParser(fields, new EnglishAnalyzer(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET));
     }
 
     public TopDocs search(String searchQuery) throws IOException, ParseException

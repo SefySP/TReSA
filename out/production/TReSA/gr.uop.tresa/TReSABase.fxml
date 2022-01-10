@@ -3,17 +3,19 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -30,45 +32,55 @@
                   <Insets />
                </VBox.margin>
                 </Label>
-                <TextField fx:id="searchText" maxWidth="400.0" minWidth="50.0" prefWidth="150.0" promptText="Search" VBox.vgrow="ALWAYS">
-                    <font>
-                        <Font size="13.0" />
-                    </font>
-               <VBox.margin>
-                  <Insets left="50.0" right="50.0" />
-               </VBox.margin>
-                </TextField>
-                <Button contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#defaultSearch" text="Search">
-               <graphic>
-                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Icons/search32.png" />
-                     </image>
-                     <viewport>
-                        <Rectangle2D height="32.0" width="32.0" />
-                     </viewport>
-                  </ImageView>
-               </graphic>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-                </Button>
+            <HBox alignment="CENTER" spacing="10.0">
+               <children>
+                      <TextField fx:id="searchText" maxWidth="400.0" minWidth="50.0" prefWidth="150.0" promptText="Search" HBox.hgrow="ALWAYS">
+                          <font>
+                              <Font size="13.0" />
+                          </font>
+                      </TextField>
+                      <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#defaultSearch" text="Search">
+                     <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Icons/search32.png" />
+                           </image>
+                           <viewport>
+                              <Rectangle2D height="32.0" width="32.0" />
+                           </viewport>
+                        </ImageView>
+                     </graphic>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                      </Button>
+               </children>
+            </HBox>
+            <TitledPane maxWidth="476.0" prefHeight="75.0" prefWidth="150.0" text="Advanced Settings" wrapText="true">
+               <content>
+                  <HBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <CheckBox fx:id="checkPlaces" mnemonicParsing="false" selected="true" text="Places" />
+                        <CheckBox fx:id="checkPeople" mnemonicParsing="false" selected="true" text="People" />
+                        <CheckBox fx:id="checkTitle" mnemonicParsing="false" selected="true" text="Title" />
+                        <CheckBox fx:id="checkBody" mnemonicParsing="false" selected="true" text="Body" />
+                     </children>
+                  </HBox>
+               </content>
+            </TitledPane>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+               <children>
+                    <Text fx:id="resultTime" strokeType="OUTSIDE" strokeWidth="0.0">
+                        <font>
+                            <Font size="13.0" />
+                        </font>
+                    </Text>
+                  <ListView fx:id="resultListView" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
          </children>
       </VBox>
    </center>
-   <bottom>
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Separator VBox.vgrow="ALWAYS" />
-              <Text fx:id="resultTime" strokeType="OUTSIDE" strokeWidth="0.0">
-                  <font>
-                      <Font size="13.0" />
-                  </font>
-              </Text>
-            <ListView fx:id="resultListView" prefWidth="200.0" />
-         </children>
-      </VBox>
-   </bottom>
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
