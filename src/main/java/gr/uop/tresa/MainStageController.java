@@ -1,5 +1,20 @@
 package gr.uop.tresa;
 
+import gr.uop.FileHolder;
+import gr.uop.lucene.LuceneConstants;
+import gr.uop.lucene.LuceneController;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.apache.lucene.queryparser.classic.ParseException;
 
 import java.io.File;
@@ -14,29 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import gr.uop.FileHolder;
-import gr.uop.lucene.LuceneConstants;
-import gr.uop.lucene.LuceneController;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-public class FXController implements Initializable
+public class MainStageController implements Initializable
 {
     @FXML
     private CheckBox checkBody;

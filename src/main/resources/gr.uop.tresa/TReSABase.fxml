@@ -20,7 +20,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="mainPane" maxHeight="1000.0" maxWidth="1000.0" minHeight="200.0" minWidth="200.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uop.tresa.FXController">
+<BorderPane fx:id="mainPane" maxHeight="1000.0" maxWidth="1000.0" minHeight="200.0" minWidth="200.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uop.tresa.MainStageController">
    <center>
       <VBox alignment="TOP_CENTER" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>

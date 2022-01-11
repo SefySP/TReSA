@@ -2,10 +2,8 @@ package gr.uop.tresa;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,7 +14,7 @@ public class TReSA extends Application
 {
     private static final double       MIN_HEIGHT = 400.0;
     private static final double       MIN_WIDTH  = 400.0;
-    private              FXController fxController;
+    private MainStageController mainStageController;
 
     @Override
     public void start(Stage primaryStage) throws IOException
@@ -32,13 +30,13 @@ public class TReSA extends Application
         primaryStage.getIcons().add(icon);
         primaryStage.setScene(scene);
         primaryStage.show();
-        fxController = fxmlLoader.getController();
+        mainStageController = fxmlLoader.getController();
 
         primaryStage.setMinHeight(MIN_HEIGHT);
         primaryStage.setMinWidth(MIN_WIDTH);
         primaryStage.setOnCloseRequest(windowEvent ->
         {
-            if (fxController.close(primaryStage))
+            if (mainStageController.close(primaryStage))
                 primaryStage.close();
             else
                 windowEvent.consume();

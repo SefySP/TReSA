@@ -10,11 +10,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="JavaFX_17" level="application" />
     <orderEntry type="library" name="lucene-analyzers-common-8.11.0" level="project" />
     <orderEntry type="library" name="lucene-core-8.11.0" level="project" />
     <orderEntry type="library" name="lucene-queryparser-8.11.0" level="project" />
-    <orderEntry type="library" name="JavaFX_17_LTS" level="application" />
-    <orderEntry type="library" name="JavaFX_17_LTS" level="application" />
+    <orderEntry type="library" name="lib" level="application" />
   </component>
 </module>
